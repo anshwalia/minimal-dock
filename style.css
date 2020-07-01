@@ -17,6 +17,7 @@ body,html{
     height: 36px;
     margin: 1px;
     border-radius: 10px;
+    background-color: rgba(0,0,0,0.9);
     filter: opacity(50%);
 }
 

@@ -13,7 +13,7 @@ body{
     position: absolute;
     /* left: -300px; */
     left: -300px;
-    background-color: rgba(0,0,0,0.3);
+    background-color: rgba(0,0,0,0.5);
 }
 
 .drawer{

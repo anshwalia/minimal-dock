@@ -1,0 +1,87 @@
+html, body{
+    margin: 0px;
+    padding: 0px;
+    height: 100vh;
+    background-color: rgba(0,0,0,0);
+}
+
+html{
+    opacity: 0;
+}
+
+body{
+    position: absolute;
+    /* left: -300px; */
+    left: -300px;
+    background-color: rgba(0,0,0,0.3);
+}
+
+.drawer{
+    height: 100vh;
+    width: 295px;
+    /* border: 2px solid black; */
+}
+
+.click-able:hover{
+    background-color: rgba(0,0,0,0.5);
+    transition: 0.33s;
+}
+
+.bg-trans-full{
+    background-color: rgba(0,0,0,0);
+}
+
+.bg-trans-half{
+    background-color: rgba(0,0,0,0.5);
+}
+
+.border-trans{
+    border-color: rgba(0,0,0,0);
+}
+
+.border-custom-grey{
+    border-color: rgba(255,255,255,0.5);
+}
+
+.text-custom-grey{
+    color: rgba(255,255,255,0.5);
+}
+
+.btn:hover{
+    color: rgba(255,255,255,0.8);
+    transition: 0.33s;
+}
+
+.settings-icon{
+    width: 32px;
+    height: 32px;
+    filter: opacity(50%);
+}
+
+.settings-icon:hover{
+    filter: opacity(80%);
+    transition: 0.33s;
+}
+
+/* Custom CSS Scroll Bar */
+
+/* width */
+::-webkit-scrollbar {
+    width: 5px;
+}
+  
+  /* Track */
+::-webkit-scrollbar-track {
+    background: rgba(0,0,0,0.3);
+}
+  
+  /* Handle */
+::-webkit-scrollbar-thumb {
+    background: rgba(255,255,255,0.5);
+    border-radius: 5px;
+}
+  
+  /* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(0,0,0,0.7);
+}

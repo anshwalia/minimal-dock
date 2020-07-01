@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings</title>
+    <!-- Bootstrap 4 CSS -->
+    <link rel="stylesheet" href="../../node_modules/bootstrap/dist/css/bootstrap.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="./settings.css">
+    <!-- JavaScript -->
+</head>
+<body class="p-3">
+<div class="p-0 m-0" ng-app="Settings" ng-controller="Settings-Ctrl">
+    <div class="row m-0 mb-3 p-0 rounded bg-trans-half">
+        <div class="col-10 m-0 p-2">
+            <h6 class="heading m-0 text-custom-grey">Settings</h6>
+        </div>
+        <div class="col-2 m-0 p-0">
+            <img ng-click="closeSettings();" class="icon icon-filter float-right" src="../../icons/exit.png" alt="Exit Icon">
+        </div>
+    </div>
+
+    <div class="row m-0 mb-3 p-0 rounded bg-trans-half">
+        <div class="col-6 m-0 p-2">
+            <p class="text-off-white m-0 mb-1">Dock Position</p>
+            <p class="badge m-0 p-2 text-off-white border-custom-off-white">{{ config.dockPosName }}</p>
+        </div>
+        <div class="col-6 m-0 p-2">
+            <table class="m-0 p-0 bg-trans-half rounded float-right">
+                <tr>
+                    <th class="p-1">
+                        <img ng-click="changeDockPosition(0);" class="icon icon-filter" src="../../icons/arrows/up-left.png" alt="Top Left">
+                    </th>
+                    <th class="p-1">
+                        <img ng-click="changeDockPosition(1);" class="icon icon-filter" src="../../icons/arrows/up-right.png" alt="Right Left">
+                    </th>
+                </tr>
+                <tr>
+                    <th class="p-1">
+                        <img ng-click="changeDockPosition(2);" class="icon icon-filter" src="../../icons/arrows/down-left.png" alt="Down Left">
+                    </th>
+                    <th class="p-1">
+                        <img ng-click="changeDockPosition(3);" class="icon icon-filter" src="../../icons/arrows/down-right.png" alt="Down Roght">
+                    </th>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <div class="row m-0 mb-3 p-0 rounded bg-trans-half">
+        <div class="col-12 m-0 p-1 d-flex justify-content-center">
+            <p ng-click="saveSettings();" class="text-off-white custom-button m-0">Save</p>
+        </div>
+    </div>
+</div>
+
+    <script type="text/javascript">
+        require('./settings');
+    </script>
+</body>
+</html>

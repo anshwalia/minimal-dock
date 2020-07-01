@@ -1,0 +1,26 @@
+body,html{
+    margin: 0px;
+    padding: 0px;
+    background-color: rgba(0,0,0,0);
+    overflow: hidden;
+}
+
+.dock{
+    /* border: 2px solid rgba(0,0,0,0); */
+    border-radius: 10px;
+    padding: 0px;
+    margin: 0px;
+}
+
+.icon{
+    width: 36px;
+    height: 36px;
+    margin: 1px;
+    border-radius: 10px;
+    filter: opacity(50%);
+}
+
+.icon:hover{
+    fill-opacity: opacity(100%);
+    transition: 0.33s;
+}

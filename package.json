@@ -1,0 +1,22 @@
+{
+  "name": "minimal-dock",
+  "version": "1.0.0",
+  "description": "a minimal dock to keep the desktop clean",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "keywords": [
+    "minimal",
+    "dock",
+    "desktop"
+  ],
+  "author": "Ansh Walia",
+  "license": "ISC",
+  "dependencies": {
+    "angular": "^1.8.0",
+    "animejs": "^3.2.0",
+    "bootstrap": "^4.5.0",
+    "electron": "^9.0.5"
+  }
+}

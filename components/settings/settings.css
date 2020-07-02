@@ -14,7 +14,7 @@ body{
     left: -300px;
     width: 100vw;
     height: 100vh;
-    background-color: rgba(0,0,0,0.5);
+    background-color: #333533;
 }
 
 select{
@@ -60,7 +60,19 @@ select{
     border: 1px solid rgba(255,255,255,0.5);
 }
 
-/* table{
-    border: 1px solid rgba(255,255,255,0.5);
-    border-radius: 10px;
-} */
+input{
+    outline: none;
+}
+
+.custom-input{
+    border: 1px solid rgba(0,0,0,0);
+    border-radius: 0.3rem;
+    background-color: rgba(0,0,0,0.5);
+    color: rgba(255,255,255,0.7);
+}
+
+.custom-input:hover{
+    border-color: rgba(255,255,255,0.5);
+    cursor: text;
+    transition: 0.33s;
+}

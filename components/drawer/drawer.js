@@ -59,16 +59,36 @@ const drawer = {
     },
 
     drawerReady: function(){
-        if(this.init()){
-            if(this.addEvents()){
-                if(this.makeDrawer()){
-                    if(this.addDirEvents()){
-                        this.drawer_states.ready = true;
-                        return true;
-                    }
+
+        let promise_init = new Promise((res,rej) => {
+            res(this.init());
+        });
+
+        let promise_addEvents = new Promise((res,rej) => {
+            res(this.addEvents());
+        });
+
+        let promise_makeDrawer = new Promise((res,rej) => {
+            res(this.makeDrawer());
+        });
+
+        let promise_addDirEvents = new Promise((res,rej) => {
+            res(this.addDirEvents());
+        });
+
+        let all_done = new Promise((res,rej) => {
+
+            Promise.all([promise_init,promise_addEvents,promise_makeDrawer,promise_addDirEvents])
+            .then((status) => {
+                if(status){
+                    console.log('Drawer Ready!');
+                    this.drawer_states.ready = true;
+                    res(true);
                 }
-            }
-        }
+            })
+        });
+
+        return all_done;
     },
 
     // Drawer Component Template Makers
@@ -140,7 +160,12 @@ const drawer = {
 
 // Code
 // Start Point
-drawer.drawerReady();
+drawer.drawerReady().then((status) => {
+    if(status){    
+        console.log('Complete');
+        ipc.send('drawer-creation-complete');
+    }
+});
 
 // IPC Events Renderer -> Main
 ipc.on('drawer-slide-in',(event) => {

@@ -7,9 +7,10 @@ const { exec } = require('child_process');
 // Custom Explorer Class
 class Explorer{
 
-    constructor(){
+    constructor(desktopPath){
         this.explorerPath = "%SystemRoot%\\explorer.exe \"";
-        this.rootPath = "C:\\Users\\Ansh Walia\\Desktop\\";
+        // this.rootPath = "C:\\Users\\Ansh Walia\\Desktop\\";
+        this.rootPath = desktopPath + '\\';
         this.pathEnd = "\"";
     }
 

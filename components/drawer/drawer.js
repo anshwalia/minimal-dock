@@ -17,10 +17,15 @@ const { exec } = require('child_process');
 
 // Custom Modules
 const Explorer = require('../../custom_modules/Explorer');
+const configLoader = require('../../custom_modules/configLoader');
+
+const cfg = new configLoader();
+cfg.loadConfig();
 
 // DOM Objects
 const html = document.querySelector('html');
 const body = document.querySelector('body');
+const notifyBox = document.querySelector('#notificationBox');
 
 // Main Drawer Object
 const drawer = {
@@ -30,6 +35,7 @@ const drawer = {
     explorer: {},
     dirList: {},
     dirObjects: {},
+    config: {},
 
     // DOM Objects
     drawerObj: {},
@@ -42,12 +48,28 @@ const drawer = {
             visible: false
         }
 
-        this.explorer = new Explorer();
-        this.dirList = this.explorer.listDir();
+        // this.explorer = new Explorer();
+        // this.dirList = this.explorer.listDir();
 
         this.drawerObj = document.querySelector('#drawer');
         this.settingsObj = document.querySelector('#settings');
         return true;
+    },
+
+    // Method to display notification to user
+    notify: function(title,content){
+        const notification = `
+            <div class="card col-12 m-0 p-0 bg-trans-full border-danger">
+                <div class="card-header p-1 bg-trans-half d-flex justify-content-center">
+                    <h4 class="heading text-custom-grey m-0">${title}</h4>
+                </div>
+                <div class="card-body p-1 bg-trans-half d-flex justify-content-center">
+                    <p class="m-0 text-custom-grey">${content}</p>
+                </div>
+            </div>
+        `;
+        notifyBox.innerHTML += notification;
+        notifyBox.style.display = "block";
     },
 
     addEvents: function(){
@@ -60,31 +82,58 @@ const drawer = {
 
     drawerReady: function(){
 
-        let promise_init = new Promise((res,rej) => {
-            res(this.init());
-        });
+        let promise_loadConfig = new Promise((res,rej) => {
+            this.config = cfg.getConfig();
 
-        let promise_addEvents = new Promise((res,rej) => {
-            res(this.addEvents());
-        });
+            if(this.config.transparentDock){
+                body.style.background = 'rgba(0,0,0,0.5)';
+            }
 
-        let promise_makeDrawer = new Promise((res,rej) => {
-            res(this.makeDrawer());
-        });
+            if(this.config != null){
+                if(fs.existsSync(this.config.desktopPath)){
+                    let dst = fs.statSync(this.config.desktopPath);
 
-        let promise_addDirEvents = new Promise((res,rej) => {
-            res(this.addDirEvents());
+                    if(dst.isDirectory()){
+                        this.explorer = new Explorer(this.config.desktopPath);
+                        this.dirList = this.explorer.listDir();
+                        console.log('dirList',this.dirList);
+                        console.log(this.drawerObj);
+
+                        if(this.init()){
+                            if(this.makeDrawer()){
+                                if(this.addEvents()){
+                                    if(this.addDirEvents()){
+                                        res(true);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    else{
+                        console.log('Desktop Path is not a directory!');
+                        this.notify('Desktop Path Invalid!', 'Enter Valid Path and relaunch.');
+                        ipc.send('toggle-drawer');
+                        ipc.send('toggle-settings');
+                        rej('Invalid Desktop Path!');
+                    }
+                }
+                else{
+                    console.log('Desktop Path Invalid!');
+                    this.notify('Desktop Path Invalid!', 'Enter Valid Path and relaunch.');
+                    ipc.send('toggle-drawer')
+                    ipc.send('toggle-settings');
+                    rej('Invalid Desktop Path!');
+                }
+            }
         });
 
         let all_done = new Promise((res,rej) => {
-
-            Promise.all([promise_init,promise_addEvents,promise_makeDrawer,promise_addDirEvents])
-            .then((status) => {
-                if(status){
-                    console.log('Drawer Ready!');
-                    this.drawer_states.ready = true;
+            promise_loadConfig.then((val) => {
+                if(val){
                     res(true);
                 }
+            }).catch((err) => {
+                rej(err);
             })
         });
 
@@ -105,6 +154,7 @@ const drawer = {
     },
 
     createCell: function(dirName,id){
+        console.log(dirName,id);
         return `
             <div class="col-4 click-able rounded m-0 p-1">
                 <div id="dir${id}" title="${dirName}" class="card border-0 bg-trans-full col-12 m-0 p-0">
@@ -126,7 +176,9 @@ const drawer = {
     },
 
     makeDrawer: function(){
-
+        console.log('Making Drawer!');
+        console.log('dirlist length',this.dirList.length);
+        console.log('dirlist obj',this.dirList);
         for(let i = 0; i < this.dirList.length;){
             let r = this.createRow();
     
@@ -165,6 +217,8 @@ drawer.drawerReady().then((status) => {
         console.log('Complete');
         ipc.send('drawer-creation-complete');
     }
+}).catch((err) => {
+    console.error(err);
 });
 
 // IPC Events Renderer -> Main

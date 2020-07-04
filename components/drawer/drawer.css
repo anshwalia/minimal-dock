@@ -64,6 +64,10 @@ body{
     transition: 0.33s;
 }
 
+#notificationBox{
+    display: none;
+}
+
 /* Custom CSS Scroll Bar */
 
 /* width */

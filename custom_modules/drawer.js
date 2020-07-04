@@ -16,8 +16,10 @@ const drawer = {
             // width: 0,
             width: 300,
             height: 600,
+
             x: 5,
             y: 54,
+
             show: false,
             frame: false,
             transparent: true,

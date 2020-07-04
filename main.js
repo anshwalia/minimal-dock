@@ -7,16 +7,17 @@ const path = require('path');
 
 // Electron Modules
 const electron = require('electron');
-const { protocol } = require('electron');
 const app = electron.app;
 const BrowserWindow = electron.BrowserWindow;
 const screen = electron.screen;
 const ipc = electron.ipcMain;
-const Notification = electron.Notification;
 
-// Custom Modules
-const drawer = require('./custom_modules/drawer');
-const settings = require('./custom_modules/settings');
+// Importing Custom Modules
+const { drawer, settings } = require('./custom_modules/index');
+const configLoader = require('./custom_modules/configLoader');
+
+const cfg = new configLoader();
+cfg.loadConfig();
 
 const mainApp = {
     // Properties
@@ -26,6 +27,7 @@ const mainApp = {
     app_pos: {},
     app_windows: {},
     screen_res: {},
+    app_config: {},
 
     // Methods
 
@@ -65,31 +67,14 @@ const mainApp = {
             drawerWindow: {},
             settingsWindow: {},
         }
+
+        this.app_config = cfg.getConfig();
+
         return true;
     },
 
-    // App Starter Method
-    startApp: function(){
-        if(this.init()){
-            this.app_windows.mainWindow = this.createWindow();
-            mainApp.app_windows.drawerWindow = drawer.createDrawer();
-            mainApp.app_windows.settingsWindow = settings.createSettings();
-            console.log('[ Application Started ]');
-            return true;
-        }
-    },
+    setAppPos: function(){
 
-    // Method to create main app window
-    createWindow: function(){
-        let window;
-
-        const { width, height } = screen.getPrimaryDisplay().workAreaSize;
-
-        // Primary Display Resolution
-        this.screen_res = { width: width, height: height }
-        console.log('Display Resolution :',this.screen_res);
-
-        // App Positions Object
         this.app_pos = {
             topLeft: { 
                 // Main Window
@@ -145,13 +130,56 @@ const mainApp = {
                 settings_y: (this.screen_res.height - ((this.app_res.height + this.app_res.settings_height)+ (2 * this.app_res.padding))),
             }
         }
+    },
+
+    // App Starter Method
+    startApp: async function(){
+        // Promise to initialize mainApp properties
+        const p_init = new Promise((res,rej) => {
+            if(this.init()){
+                res(true);
+            }
+            else{
+                rej('Init Failed!');
+            }
+        });
+
+        await p_init.then((val) => {
+            if(val){
+                this.app_windows.mainWindow = this.createWindow();
+                mainApp.app_windows.drawerWindow = drawer.createDrawer();
+                mainApp.app_windows.settingsWindow = settings.createSettings();
+                console.log('[ Application Started ]');
+            }
+        }).catch((err) => {
+            console.log(err);
+        });
+
+        return true;
+    },
+
+    // Method to create main app window
+    createWindow: function(){
+        let window;
+
+        const { width, height } = screen.getPrimaryDisplay().workAreaSize;
+
+        // Primary Display Resolution
+        this.screen_res = { width: width, height: height }
+        console.log('Display Resolution :',this.screen_res);
+
+        // Settings App Screen Positioning
+        this.setAppPos();
 
         window = new BrowserWindow({
             icon: path.join(__dirname,'/icons/app-icon.png'),
+
             width: this.app_res.width,
             height: this.app_res.height,
+
             x: this.app_pos.topLeft.x,
             y: this.app_pos.topLeft.y,
+
             frame: false,
             transparent: true,
             fullscreen:false,
@@ -160,10 +188,10 @@ const mainApp = {
             movable: false,
             resizable: false,
             show: false,
+
             webPreferences: {
                 nodeIntegration: true,
                 backgroundThrottling: false,
-                // webSecurity: false,
             }
         });
 
@@ -181,7 +209,36 @@ const mainApp = {
             mainApp.app_windows.mainWindow.show();
         });
 
+        window.on('window-all-closed',() => {
+            if(process.platform !== 'darwin'){
+                console.log('Closing App!');
+                app.quit();
+            }
+        });
+
         return window;
+    },
+
+    // Refreshes the resoluiton of app windows
+    appWindowsResRefresh: function(){
+        // Main Window
+        this.app_windows.mainWindow.setBounds({
+            width: 40,
+            height: 40
+        });
+
+        // Drawer Window
+        this.app_windows.drawerWindow.setBounds({
+            width: 300,
+            height: 600
+        });
+
+        // Settings Window
+        this.app_windows.settingsWindow.setBounds({
+            width: 300,
+            height: 300
+        });
+
     },
 
     // Function to change dock position 
@@ -282,21 +339,8 @@ const mainApp = {
                 });
                 
         }
-
-        this.app_windows.mainWindow.setBounds({
-            width: 40,
-            height: 40
-        });
-
-        this.app_windows.drawerWindow.setBounds({
-            width: 300,
-            height: 600
-        });
-
-        this.app_windows.settingsWindow.setBounds({
-            width: 300,
-            height: 300
-        });
+        // Resets app windows resolution
+        this.appWindowsResRefresh();
     },
 
     // Method to show given window
@@ -364,10 +408,12 @@ const mainApp = {
 
 // App Controls
 app.on('ready',() => {
-    if(mainApp.startApp()){
-        console.log('App Started!');
-        mainApp.changeDockPosition(0);
-    }
+    mainApp.startApp().then((val) => {
+        if(val){
+            console.log('App Started!');
+            mainApp.changeDockPosition(mainApp.app_config.dockPosition);
+        }
+    });
 });
 
 app.on('window-all-closed',() => {

@@ -55,7 +55,7 @@
         </div>
         <div class="col-4 m-0 p-1 px-2">
             <label class="switch float-right">
-                <input type="checkbox">
+                <input ng-model="config.transparentDock" type="checkbox">
                 <span class="slider round"></span>
             </label>
         </div>
@@ -63,13 +63,13 @@
 
     <div class="row m-0 mb-2 p-0">
         <div class="col-12 m-0 p-0">
-            <input class="col-12 custom-input p-1" id="desktopPath" type="text" placeholder="Desktop Path">
+            <input ng-model="config.desktopPath" class="col-12 custom-input p-1" type="text" placeholder="Desktop Path">
         </div>
     </div>
 
-    <div class="row m-0 mb-3 p-0 rounded bg-trans-half">
+    <div class="row m-0 mb-3 p-0 rounded bg-trans-full">
         <div class="col-12 m-0 p-1 d-flex justify-content-center">
-            <p title="Save Settings" ng-click="saveSettings();" class="text-off-white custom-button m-0">Save</p>
+            <button type="button" title="Save Settings" ng-click="saveSettings();" class="btn btn-sm btn-success p-1 px-2 m-0">Save</button>
         </div>
     </div>
 </div>

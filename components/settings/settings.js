@@ -15,54 +15,28 @@ const anime = require('animejs');
 
 // Custom Animations
 const animations = require('../../custom_modules/animations');
-const { exec, config } = require('process');
 
-// Config File Path
-const configPath = '../../data/config.json';
-
-// Function to create config file
-function createConfigFile(){
-    let config = {
-        desktopPath: '',
-        dockPosition: 0,
-    }
-    fs.writeFileSync(configPath, JSON.stringify(config,null,2));
-    return config;
-}
-
-// Function to load config file data
-function getConfigData(){
-    let cfg = null;
-
-    if(fs.existsSync(configPath)){
-        cfg = fs.readFileSync(configPath);
-        return JSON.parse(cfg);
-    }
-    else{
-        console.log('Config file not present, creating new config file!');
-        createConfigFile().then((config) => {
-            cfg = config;
-        });
-        return cfg;
-    }
-}
+// Custom modules
+const configLoader = require('../../custom_modules/configLoader');
+const { config } = require('process');
 
 // Code
 let settingsView = false;
 const body = document.querySelector('body');
 const html = document.querySelector('html');
 
+const cfg = new configLoader();
+cfg.loadConfig();
+
 // Angular Module
 const settings = angular.module('Settings',[]);
 
 settings.controller('Settings-Ctrl',($scope) => {
 
-    // $scope.config = getConfigData();
-    // console.log(config);
+    $scope.config = cfg.getConfig();
 
-    $scope.config = {
-        desktopPath: '',
-        dockPosition: 0
+    if($scope.config.transparentDock){
+        body.style.background = 'rgba(0,0,0,0.5)';
     }
 
     $scope.changeDockPosition = (pos) => {
@@ -90,12 +64,13 @@ settings.controller('Settings-Ctrl',($scope) => {
 
             default:
                 $scope.config.dockPosition = 0;
-                $scope.config.dockPosName = 'Top Left'
+                $scope.config.dockPosName = 'Top Left';
         }
     }
     
     $scope.saveSettings = () => {
-        console.log('Settings Saved!');
+        console.log('Settings',$scope.config);
+        cfg.saveConfig($scope.config);
     }
 
     $scope.closeSettings = () => {

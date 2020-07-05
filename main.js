@@ -16,6 +16,7 @@ const ipc = electron.ipcMain;
 const { drawer, settings } = require('./custom_modules/index');
 const configLoader = require('./custom_modules/configLoader');
 
+// Configuration Object
 const cfg = new configLoader();
 cfg.loadConfig();
 
@@ -43,7 +44,7 @@ const mainApp = {
             // Default Values
 
             // App Window
-            width: 40,
+            width: 300,
             height: 40,
 
             // Drawer Window
@@ -180,6 +181,8 @@ const mainApp = {
             x: this.app_pos.topLeft.x,
             y: this.app_pos.topLeft.y,
 
+            show: false,
+
             frame: false,
             transparent: true,
             fullscreen:false,
@@ -187,7 +190,6 @@ const mainApp = {
             maximizable:false,
             movable: false,
             resizable: false,
-            show: false,
 
             webPreferences: {
                 nodeIntegration: true,
@@ -223,7 +225,7 @@ const mainApp = {
     appWindowsResRefresh: function(){
         // Main Window
         this.app_windows.mainWindow.setBounds({
-            width: 40,
+            width: 200,
             height: 40
         });
 
@@ -466,3 +468,20 @@ ipc.on('settings-hidden',(event) => {
         }
     });
 });
+
+// SEARCH IPC
+ipc.on('expand-dock-searching',(event) => {
+    console.log('[ Expanding for Search ]');
+    mainApp.app_windows.mainWindow.setBounds({
+        width: 200,
+        height: 500
+    });
+});
+
+ipc.on('shrink-dock-not-searching',(event) => {
+    console.log('[ Shrinking Dock]');
+    mainApp.app_windows.mainWindow.setBounds({
+        width: 200,
+        height: 40
+    });
+})

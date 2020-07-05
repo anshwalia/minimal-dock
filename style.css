@@ -6,7 +6,6 @@ body,html{
 }
 
 .dock{
-    /* border: 2px solid rgba(0,0,0,0); */
     border-radius: 10px;
     padding: 0px;
     margin: 0px;
@@ -24,4 +23,64 @@ body,html{
 .icon:hover{
     fill-opacity: opacity(100%);
     transition: 0.33s;
+}
+
+input{
+    margin: 0px;
+    margin-top: 3px;
+    margin-right: 5px;
+    height: 32px;
+    border-radius: 5px;
+    border: 1px solid rgba(255,255,255,0.4);
+    background-color: rgba(0,0,0,0.5);
+    color: rgba(255,255,255,0.7);
+}
+
+input:focus, textarea:focus, select:focus{
+    outline: none;
+}
+
+#searchResultBox{
+    overflow-x: hidden;
+    overflow-y: auto;
+    background-color: #333333;
+    height: 400px;
+    border: 1px solid rgba(255,255,255,0.4);
+}
+
+.list-group{
+    background-color: rgba(0,0,0,0);
+}
+
+.list-group-item{
+    background-color: rgba(0,0,0,0);
+    color: rgba(255,255,255,0.7);
+}
+
+.list-group-item:hover{
+    cursor: pointer;
+    background-color: rgba(0,0,0,0.7);
+}
+
+/* Custom CSS Scroll Bar */
+
+/* width */
+::-webkit-scrollbar {
+    width: 5px;
+}
+  
+  /* Track */
+::-webkit-scrollbar-track {
+    background: rgba(0,0,0,0.3);
+}
+  
+  /* Handle */
+::-webkit-scrollbar-thumb {
+    background: rgba(255,255,255,0.5);
+    border-radius: 5px;
+}
+  
+  /* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(0,0,0,0.7);
 }

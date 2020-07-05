@@ -9,11 +9,25 @@
     <!-- Custom CSS -->
     <link rel="stylesheet" href="./style.css">
 </head>
-<body>
+<body class="">
 
-    <div class="dock row p-0 m-0">
-        <div class="col-12 p-0 m-0 d-flex justify-content-center">
-            <img id="app" class="icon" src="./icons/app-icon.png" alt="App Icon">
+    <div ng-app="Dock" ng-controller="Dock-Ctrl">
+        <!-- Dock -->
+        <div class="dock row p-0 m-0">
+            <div class="col-2 p-0 m-0">
+                <img ng-click="toggleDrawer()" class="icon float-left" src="./icons/app-icon.png" alt="App Icon">
+            </div>
+            <div class="col-10 p-0 m-0">
+                <input ng-focus="searchKeyword()" ng-keydown="searchKeyword()" ng-model="keyword" type="text" class="mx-2 col-11 float-left" placeholder="search">
+            </div>
+        </div>
+        <!-- Search Results -->
+        <div ng-show="searching" class="row m-0 my-1 p-0">
+            <div id="searchResultBox" class="col-12 m-0 p-1 rounded">
+                <ul class="list-group col-12 m-0 p-0 border-0">
+                    <li class="list-group-item border-0" ng-repeat="match in searchMatches" ng-click="open(match.index)">{{ match.word }}</li>
+                </ul>
+            </div>
         </div>
     </div>
 

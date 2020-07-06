@@ -2,13 +2,16 @@
 
 const fs = require('fs');
 
+// ConfigLoader Class
 class configLoader{
 
+    // Class Constructor
     constructor(){
         this.configPath = 'config.json';
         this.config = null
     }
 
+    // Method to create config file
     createConfig(){
         let config = {
             desktopPath: '',
@@ -21,6 +24,7 @@ class configLoader{
         return true;
     }
 
+    // Method to read and load config file
     loadConfig(){
         if(fs.existsSync(this.configPath)){
             let config = fs.readFileSync(this.configPath);
@@ -45,10 +49,12 @@ class configLoader{
         }
     }
 
+    // Method to get config object
     getConfig(){
         return Object.assign({},this.config);
     }
 
+    // Method to save config to file
     saveConfig(config){
         fs.writeFileSync(this.configPath,JSON.stringify(config,null,2));
         return true;

@@ -36,15 +36,16 @@ input{
     color: rgba(255,255,255,0.7);
 }
 
-input:focus, textarea:focus, select:focus{
+input:focus{
     outline: none;
 }
 
-#searchResultBox{
+#searchResultBoxTop,#searchResultBoxBottom{
     overflow-x: hidden;
     overflow-y: auto;
     background-color: #333333;
-    height: 400px;
+    min-height: 50px;
+    max-height: 400px;
     border: 1px solid rgba(255,255,255,0.4);
 }
 
@@ -63,7 +64,6 @@ input:focus, textarea:focus, select:focus{
 }
 
 /* Custom CSS Scroll Bar */
-
 /* width */
 ::-webkit-scrollbar {
     width: 5px;

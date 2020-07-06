@@ -1,5 +1,6 @@
 'use strict';
 
+// SearchAPI Class
 class SearchAPI{
 
     // Class Constructor
@@ -10,7 +11,7 @@ class SearchAPI{
         }
     }
 
-    // Method to search keyword
+    // Method to search keyword in search list
     searchKeyword(keyword){
         let match_list = [];
 
@@ -41,15 +42,7 @@ class SearchAPI{
 
         return match_list;
     }
+
 }
-
-// Test Code
-// let list = ['Ansh', 'Walia', 'Satvik', 'Chachra'];
-
-// const s = new SearchAPI(list);
-
-// let res = s.searchKeyword('walia');
-
-// console.log(res);
 
 module.exports = SearchAPI;

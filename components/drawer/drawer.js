@@ -39,6 +39,7 @@ const drawer = {
 
     // DOM Objects
     drawerObj: {},
+    closeBtn: {},
     settingsObj: {},
 
     // Methods
@@ -53,6 +54,7 @@ const drawer = {
 
         this.drawerObj = document.querySelector('#drawer');
         this.settingsObj = document.querySelector('#settings');
+        this.closeBtn = document.querySelector('#close');
         return true;
     },
 
@@ -72,14 +74,20 @@ const drawer = {
         notifyBox.style.display = "block";
     },
 
+    // Method to add event listeners to dom objects
     addEvents: function(){
         this.settingsObj.addEventListener('click',() => {
             ipc.send('toggle-settings');
         });
 
+        this.closeBtn.addEventListener('click',() => {
+            ipc.send('toggle-drawer');
+        });
+
         return true;
     },
 
+    // Function to create drawer and get it ready
     drawerReady: function(){
 
         let promise_loadConfig = new Promise((res,rej) => {
@@ -142,17 +150,19 @@ const drawer = {
 
     // Drawer Component Template Makers
 
+    // Method to make long titles shorters
     titleShortener: function(title){
         if(title.length <= 9){
             return title;
         }
         else{
-            let st = title.slice(0,7);
-            st += '...';
-            return st;
+            let shortTitle = title.slice(0,7);
+            shortTitle += '...';
+            return shortTitle;
         }
     },
 
+    // Method to create cell in the drawer grid that displays directory
     createCell: function(dirName,id){
         console.log(dirName,id);
         return `
@@ -169,12 +179,14 @@ const drawer = {
         `;
     },
 
+    // Method to create row in the drawer grid that contains cell row
     createRow: function(){
         const row = document.createElement('DIV');
         row.className = "row m-0 p-1";
         return row;
     },
 
+    // Drawer grid assembler method
     makeDrawer: function(){
         console.log('Making Drawer!');
         console.log('dirlist length',this.dirList.length);
@@ -197,6 +209,7 @@ const drawer = {
         return true;
     },
 
+    // Method to add click event listeners to directory cells to open directory in explorer
     addDirEvents: function(){
         for(let i = 0; i < this.dirList.length; i++){
             this.dirObjects[i] = document.querySelector(`#dir${i}`);
@@ -210,7 +223,6 @@ const drawer = {
 
 }
 
-// Code
 // Start Point
 drawer.drawerReady().then((status) => {
     if(status){    
@@ -222,13 +234,14 @@ drawer.drawerReady().then((status) => {
 });
 
 // IPC Events Renderer -> Main
+// Drawer Slide-In
 ipc.on('drawer-slide-in',(event) => {
     if(animations.slideIn(body) && animations.fadeIn(html)){
         drawer.drawer_states.visible = true;
         console.log('[Drawer Visible]');
     }
 });
-
+// Drawer Slide-Out
 ipc.on('drawer-slide-out',(event) => {
     if(animations.slideOut(body) && fadeOut(html)){
         drawer.drawer_states.visible = true;

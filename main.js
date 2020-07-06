@@ -1,7 +1,6 @@
 'use strict';
 
 // Node Modules
-const fs = require('fs');
 const url = require('url');
 const path = require('path');
 
@@ -13,7 +12,7 @@ const screen = electron.screen;
 const ipc = electron.ipcMain;
 
 // Importing Custom Modules
-const { drawer, settings } = require('./custom_modules/index');
+const { drawer, settings } = require('./window_constructors/module_loader');
 const configLoader = require('./custom_modules/configLoader');
 
 // Configuration Object
@@ -44,7 +43,7 @@ const mainApp = {
             // Default Values
 
             // App Window
-            width: 300,
+            width: 200,
             height: 40,
 
             // Drawer Window
@@ -469,7 +468,8 @@ ipc.on('settings-hidden',(event) => {
     });
 });
 
-// SEARCH IPC
+// SEARCH BOX IPC
+// To expand dock size
 ipc.on('expand-dock-searching',(event) => {
     console.log('[ Expanding for Search ]');
     mainApp.app_windows.mainWindow.setBounds({
@@ -478,6 +478,7 @@ ipc.on('expand-dock-searching',(event) => {
     });
 });
 
+// To shrink dock size
 ipc.on('shrink-dock-not-searching',(event) => {
     console.log('[ Shrinking Dock]');
     mainApp.app_windows.mainWindow.setBounds({

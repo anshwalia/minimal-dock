@@ -9,9 +9,19 @@
     <!-- Custom CSS -->
     <link rel="stylesheet" href="./style.css">
 </head>
-<body class="">
+<body>
 
     <div ng-app="Dock" ng-controller="Dock-Ctrl">
+
+        <!-- Search Results Top -->
+        <div ng-show="searching_top" class="row m-0 my-1 p-0">
+            <div id="searchResultBoxTop" class="col-12 m-0 p-1 rounded">
+                <ul class="list-group col-12 m-0 p-0 border-0">
+                    <li class="list-group-item border-0" ng-repeat="match in searchMatches" ng-click="open(match.index)">{{ match.word }}</li>
+                </ul>
+            </div>
+        </div>
+        
         <!-- Dock -->
         <div class="dock row p-0 m-0">
             <div class="col-2 p-0 m-0">
@@ -21,14 +31,16 @@
                 <input ng-focus="searchKeyword()" ng-keydown="searchKeyword()" ng-model="keyword" type="text" class="mx-2 col-11 float-left" placeholder="search">
             </div>
         </div>
-        <!-- Search Results -->
-        <div ng-show="searching" class="row m-0 my-1 p-0">
-            <div id="searchResultBox" class="col-12 m-0 p-1 rounded">
+
+        <!-- Search Results Bottom -->
+        <div ng-show="searching_bottom" class="row m-0 my-1 p-0">
+            <div id="searchResultBoxBottom" class="col-12 m-0 p-1 rounded">
                 <ul class="list-group col-12 m-0 p-0 border-0">
                     <li class="list-group-item border-0" ng-repeat="match in searchMatches" ng-click="open(match.index)">{{ match.word }}</li>
                 </ul>
             </div>
         </div>
+
     </div>
 
     <script type="text/javascript">

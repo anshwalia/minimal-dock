@@ -13,11 +13,20 @@ const settings = {
         let window;
 
         window = new BrowserWindow({
+            // Window Icon
+            icon: path.join(__dirname,'/app-icon.png'),
+
+            // Window Resolution
             x: 315,
             y: 56,
+
+            // Window Position
             width: 300,
             height: 300,
+
+            // Window Options
             show: false,
+            
             frame: false,
             transparent: true,
             fullscreen:false,

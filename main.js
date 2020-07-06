@@ -172,14 +172,18 @@ const mainApp = {
         this.setAppPos();
 
         window = new BrowserWindow({
+            // Window Icon
             icon: path.join(__dirname,'/icons/app-icon.png'),
 
+            // Window Resolution
             width: this.app_res.width,
             height: this.app_res.height,
 
+            // Window Position
             x: this.app_pos.topLeft.x,
             y: this.app_pos.topLeft.y,
 
+            // Window Options
             show: false,
 
             frame: false,

@@ -13,14 +13,20 @@ const drawer = {
         let window;
 
         window = new BrowserWindow({
-            // width: 0,
+            // Window Icon
+            icon: path.join(__dirname,'/app-icon.png'),
+
+            // Window Resolution
             width: 300,
             height: 600,
 
+            // Window Position
             x: 5,
             y: 54,
 
+            // Window Options
             show: false,
+            
             frame: false,
             transparent: true,
             fullscreen:false,
@@ -31,7 +37,6 @@ const drawer = {
             webPreferences: {
                 nodeIntegration: true,
                 backgroundThrottling: false,
-                // webSecurity: false,
             }
         });
     

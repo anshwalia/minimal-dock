@@ -5,23 +5,19 @@ const url = require('url');
 const path = require('path');
 
 // Electron Modules
-const electron = require('electron');
-const app = electron.app;
-const BrowserWindow = electron.BrowserWindow;
-const screen = electron.screen;
-const ipc = electron.ipcMain;
+const { app, BrowserWindow, screen, ipcMain : ipc} = require('electron');
 
 // Importing Custom Modules
 const { drawer, settings } = require('./window_constructors/module_loader');
-const configLoader = require('./custom_modules/configLoader');
+const { configLoader } = require('./custom_modules/module_loader');
 
 // Configuration Object
 const cfg = new configLoader();
 cfg.loadConfig();
 
 const mainApp = {
+    
     // Properties
-
     app_state: {},
     app_res: {},
     app_pos: {},

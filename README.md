@@ -6,7 +6,6 @@
 ### Tech Stack
 * ElectronJS
 * NodeJS
-* AngularJS
 * Bootstrap 4
 * Library
   * anime.js

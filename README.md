@@ -1,7 +1,7 @@
 <img src="./assets/icons/GitHub/app-icon-black.png">
 
 # Minimal Dock
-#### A Minimal Dock to Keep Your Desktop Clean
+#### Dock Widget to Keep Your Desktop Clean
 
 ### Tech Stack
 * ElectronJS
